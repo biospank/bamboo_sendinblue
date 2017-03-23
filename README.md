@@ -14,7 +14,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   end
   ```
 
-2. Ensure bamboo_sendinblue is started before your application:
+2. Ensure bamboo is started before your application:
 
   ```elixir
   def application do

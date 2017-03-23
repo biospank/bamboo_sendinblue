@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.5">
+    <title>BambooSendinBlue – Bamboo SendinBlue Adapter v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-a07cea761b.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/bamboo_sendinblue/readme.html" />
+    
+    <script src="dist/sidebar_items-5ea23062bf.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="README.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Bamboo SendinBlue Adapter
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.1.0
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+<h1>BambooSendinBlue</h1>
+<p>An Adapter for the <a href="https://github.com/thoughtbot/bamboo">Bamboo</a> email app.</p>
+<h2 id="installation" class="section-heading">
+  <a href="#installation" class="hover-link"><i class="icon-link"></i></a>
+  Installation
+</h2>
+
+<p>If <a href="https://hex.pm/docs/publish">available in Hex</a>, the package can be installed as:</p>
+<ol>
+<li>Add bamboo_sendinblue to your list of dependencies in <code class="inline">mix.exs</code>:
+</li>
+</ol>
+<pre><code class="elixir">  def deps do
+    [{:bamboo_sendinblue, &quot;~&gt; 0.1.0&quot;}]
+  end</code></pre>
+<ol>
+<li>Ensure bamboo is started before your application:
+</li>
+</ol>
+<pre><code class="elixir">  def application do
+    [applications: [:bamboo]]
+  end</code></pre>
+<ol>
+<li>Setup your SendinBlue configuration:
+</li>
+</ol>
+<pre><code class="elixir">  # In your config/config.exs file
+  config :my_app, MyApp.Mailer,
+    adapter: Bamboo.SendinBlueAdapter,
+    api_key: &quot;your-api-key&quot;</code></pre>
+<ol>
+<li>Follow Bamboo <a href="https://github.com/thoughtbot/bamboo#getting-started">Getting Started Guide</a>
+</li>
+</ol>
+<h2 id="contributing" class="section-heading">
+  <a href="#contributing" class="hover-link"><i class="icon-link"></i></a>
+  Contributing
+</h2>
+
+<p>Before opening a pull request you can open an issue if you have any question or need some guidance.</p>
+<p>Here’s how to setup the project:</p>
+<pre><code class="elixir">$ git clone https://github.com/biospank/bamboo_sendinblue.git
+$ cd bamboo_sendinblue
+$ mix deps.get
+$ mix test</code></pre>
+<p>Once you’ve made your additions and <code class="inline">mix test</code> passes, go ahead and open a Pull Request.</p>
+<h2 id="todo" class="section-heading">
+  <a href="#todo" class="hover-link"><i class="icon-link"></i></a>
+  TODO
+</h2>
+
+<ol>
+<li>Attachments
+</li>
+</ol>
+<h2 id="license" class="section-heading">
+  <a href="#license" class="hover-link"><i class="icon-link"></i></a>
+  License
+</h2>
+
+<p>Bamboo SendinBlueAdapter is released under <a href="https://opensource.org/licenses/MIT">The MIT License (MIT)</a>.</p>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.5),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-4aef34ad5f.js"></script>
+  </body>
+</html>
+

@@ -1,4 +1,4 @@
-# BambooSendinblue
+# BambooSendinBlue
 
 An Adapter for the [Bamboo](https://github.com/thoughtbot/bamboo) email app.
 

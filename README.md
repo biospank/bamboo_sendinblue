@@ -1,6 +1,7 @@
 # BambooSendinBlue
 
 An Adapter for the [Bamboo](https://github.com/thoughtbot/bamboo) email app.
+Uses SendInBlue API v2.0
 
 ## Installation
 

@@ -36,7 +36,7 @@ defmodule BambooSendinblue.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:bamboo, "~> 0.8.0"},
+      {:bamboo, "~> 1.1"},
       {:credo, "~> 0.5.3", only: [:dev, :test]},
       {:earmark, "~> 1.0.3", only: :dev},
       {:ex_doc, "~> 0.14.5", only: :dev},

@@ -11,7 +11,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
   ```elixir
   def deps do
-    [{:bamboo_sendinblue, "~> 0.1.0"}]
+    [{:bamboo_sendinblue, "~> 0.2.0"}]
   end
   ```
 

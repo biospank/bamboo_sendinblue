@@ -164,10 +164,10 @@ defmodule Bamboo.SendinBlueAdapter do
 
   defp put_addresses(body, field, addresses), do: Map.put(body, field, addresses)
 
-  defp list_empty?([]), do: true
-  defp list_empty?(list) do
-    Enum.all?(list, fn(el) -> el == "" || el == nil end)
-  end
+  # defp list_empty?([]), do: true
+  # defp list_empty?(list) do
+  #   Enum.all?(list, fn(el) -> el == "" || el == nil end)
+  # end
 
   defp base_uri do
     Application.get_env(:bamboo, :sendinblue_base_uri) || @default_base_uri

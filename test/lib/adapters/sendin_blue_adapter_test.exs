@@ -116,16 +116,16 @@ defmodule Bamboo.SendinBlueAdapterTest do
     email =
       new_email(
         to: [{"ToName", "to@bar.com"}, {nil, "noname@bar.com"}],
-        cc: [{"CC", "cc@bar.com"}],
-        bcc: [{"BCC", "bcc@bar.com"}]
+        cc: [{"CC1", "cc1@bar.com"}, {"CC2", "cc2@bar.com"}],
+        bcc: [{"BCC1", "bcc1@bar.com"}, {"BCC2", "bcc2@bar.com"}]
       )
 
     email |> SendinBlueAdapter.deliver(@config)
 
     assert_receive {:fake_sendinblue, %{params: params}}
-    assert params["to"] == %{"to@bar.com,noname@bar.com" => "ToName,"}
-    assert params["cc"] == %{"cc@bar.com" => "CC"}
-    assert params["bcc"] == %{"bcc@bar.com" => "BCC"}
+    assert params["to"] == %{"to@bar.com" => "ToName", "noname@bar.com" => nil}
+    assert params["cc"] == %{"cc1@bar.com" => "CC1", "cc2@bar.com" => "CC2"}
+    assert params["bcc"] == %{"bcc1@bar.com" => "BCC1", "bcc2@bar.com" => "BCC2"}
   end
 
   test "deliver/2 correctly formats DATA attachments" do
@@ -148,7 +148,7 @@ defmodule Bamboo.SendinBlueAdapterTest do
 
     email |> SendinBlueAdapter.deliver(@config)
     assert_receive {:fake_sendinblue, %{params: params}}
-    assert params["to"] == %{"noname@bar.com" => ""}
+    assert params["to"] == %{"noname@bar.com" => nil}
 
     assert params |> get_in(["attachment", "attachment1.png"]) ==
              File.read!("./test/support/attachment.png") |> Base.encode64()

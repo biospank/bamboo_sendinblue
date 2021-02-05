@@ -135,24 +135,19 @@ defmodule Bamboo.SendinBlueAdapter do
   end
 
   defp put_to(body, %Email{to: to}) do
-    {names, addresses} = Enum.unzip(to)
-    body |> put_addresses(:to, %{Enum.join(addresses, ",") => Enum.join(names, ",")})
+    body |> put_addresses(:to, address_map(to))
   end
 
   defp put_cc(body, %Email{cc: []}), do: body
 
   defp put_cc(body, %Email{cc: cc}) do
-    {names, addresses} = Enum.unzip(cc)
-    body |> put_addresses(:cc, %{Enum.join(addresses, ",") => Enum.join(names, ",")})
+    body |> put_addresses(:cc, address_map(cc))
   end
 
   defp put_bcc(body, %Email{bcc: []}), do: body
 
   defp put_bcc(body, %Email{bcc: bcc}) do
-    {names, addresses} = Enum.unzip(bcc)
-
-    body
-    |> put_addresses(:bcc, %{Enum.join(addresses, ",") => Enum.join(names, ",")})
+    body |> put_addresses(:bcc, address_map(bcc))
   end
 
   defp put_subject(body, %Email{subject: subject}), do: Map.put(body, :subject, subject)
@@ -189,5 +184,12 @@ defmodule Bamboo.SendinBlueAdapter do
 
   defp put_attachment(acc, %Attachment{data: data, filename: filename}) do
     Map.put(acc, filename, Base.encode64(data))
+  end
+
+  defp address_map(addresses) when is_list(addresses) do
+    addresses
+    |> Enum.reduce(%{}, fn {name, address}, acc ->
+      Map.put(acc, address, name)
+    end)
   end
 end

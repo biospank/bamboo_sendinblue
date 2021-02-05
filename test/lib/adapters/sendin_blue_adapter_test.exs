@@ -158,7 +158,8 @@ defmodule Bamboo.SendinBlueAdapterTest do
   end
 
   defp new_email(attrs \\ []) do
-    attrs = Keyword.merge([from: "foo@bar.com", to: []], attrs)
-    attrs |> Email.new_email() |> Bamboo.Mailer.normalize_addresses()
+    Keyword.merge([from: "foo@bar.com", to: []], attrs)
+    |> Email.new_email()
+    |> Bamboo.Mailer.normalize_addresses()
   end
 end

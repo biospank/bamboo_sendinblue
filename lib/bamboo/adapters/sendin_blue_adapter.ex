@@ -136,8 +136,7 @@ defmodule Bamboo.SendinBlueAdapter do
 
   defp put_to(body, %Email{to: to}) do
     {names, addresses} = Enum.unzip(to)
-    result = body |> put_addresses(:to, %{Enum.join(addresses, ",") => Enum.join(names, ",")})
-    result
+    body |> put_addresses(:to, %{Enum.join(addresses, ",") => Enum.join(names, ",")})
   end
 
   defp put_cc(body, %Email{cc: []}), do: body

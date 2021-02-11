@@ -5,7 +5,7 @@ defmodule BambooSendinblue.Mixfile do
 
   def project do
     [app: :bamboo_sendinblue,
-     version: "0.2.0",
+     version: "0.3.0",
      elixir: ">= 1.6.6",
      source_url: @project_url,
      homepage_url: @project_url,
@@ -39,7 +39,7 @@ defmodule BambooSendinblue.Mixfile do
       {:bamboo, "~> 1.1.0"},
       {:credo, "~> 0.10.2", only: [:dev, :test]},
       {:earmark, "~> 1.2.6", only: :dev},
-      {:ex_doc, "~> 0.17.1", only: :dev},
+      {:ex_doc, "~> 0.19.1", only: :dev},
       {:cowboy, "~> 2.5.0", only: [:test, :dev]},
       {:plug_cowboy, "~> 2.0", only: [:test, :dev]}
     ]

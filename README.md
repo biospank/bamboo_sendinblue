@@ -9,28 +9,28 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 1. Add bamboo_sendinblue to your list of dependencies in `mix.exs`:
 
-  ```elixir
-  def deps do
-    [{:bamboo_sendinblue, "~> 0.2.0"}]
-  end
-  ```
+```elixir
+def deps do
+  [{:bamboo_sendinblue, "~> 0.2.0"}]
+end
+```
 
 2. Ensure bamboo is started before your application:
 
-  ```elixir
-  def application do
-    [applications: [:bamboo]]
-  end
-  ```
+```elixir
+def application do
+  [applications: [:bamboo]]
+end
+```
 
 3. Setup your SendinBlue configuration:
 
-  ```elixir
-  # In your config/config.exs file
-  config :my_app, MyApp.Mailer,
-    adapter: Bamboo.SendinBlueAdapter,
-    api_key: "your-api-key"
-  ```
+```elixir
+# In your config/config.exs file
+config :my_app, MyApp.Mailer,
+  adapter: Bamboo.SendinBlueAdapter,
+  api_key: "your-api-key"
+```
 
 4. Follow Bamboo [Getting Started Guide](https://github.com/thoughtbot/bamboo#getting-started)
 
@@ -51,7 +51,7 @@ Once you've made your additions and `mix test` passes, go ahead and open a Pull 
 
 ## TODO
 
-1. Attachments <---
+1. Attachments (Does not support link attachments)
 
 ## License
 

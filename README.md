@@ -58,7 +58,7 @@ Please take note that V2 API keys will not work with the V3 adapter and vice ver
     bcc: [{"Hidden foo", "hfoo@bar.com"}],
     attachments: [
       Bamboo.Attachment.new("./test/support/attachment.png", filename: "attachment1.png"),
-      %Bamboo.Attachment{path: "https://www.coders51.com/img/logo-alt.png"}
+      %Bamboo.Attachment{path: "<url>"}
     ]
   )
   |> put_header("reply-to-email", "noreply@bar.com")

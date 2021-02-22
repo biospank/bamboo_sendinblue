@@ -184,7 +184,8 @@ defmodule Bamboo.SendinBlueAdapterV3 do
     Map.put(body, :attachment, attachments)
   end
 
-  defp prepare_attachment(%Attachment{data: data, filename: filename}) when not is_nil(data) do
+  defp prepare_attachment(%Attachment{data: data, filename: filename})
+       when not is_nil(data) and not is_nil(filename) do
     %{content: Base.encode64(data), name: filename}
   end
 

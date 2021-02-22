@@ -146,7 +146,142 @@ defmodule Bamboo.SendinBlueAdapterV3Test do
            ]
   end
 
-  test "deliver/2 correctly formats DATA/LINK attachments" do
+  test "deliver/2 correctly formats DATA attachment from local path even if filename is missing" do
+    email =
+      new_email(
+        to: "noname@bar.com",
+        attachments: [
+          Attachment.new("./test/support/attachment.png")
+        ]
+      )
+
+    email |> SendinBlueAdapterV3.deliver(@config)
+    assert_receive {:fake_sendinblue, %{params: params}}
+    assert params["to"] == [%{"email" => "noname@bar.com"}]
+
+    assert params["attachment"] == [
+             %{
+               "content" => File.read!("./test/support/attachment.png") |> Base.encode64(),
+               "name" => "attachment.png"
+             }
+           ]
+  end
+
+  test "deliver/2 correctly formats DATA attachment from contents, path when filename is missing" do
+    email =
+      new_email(
+        to: "noname@bar.com",
+        attachments: [
+          %Attachment{
+            path: "./test/support/attachment.png",
+            data: File.read!("./test/support/attachment.png")
+          }
+        ]
+      )
+
+    email |> SendinBlueAdapterV3.deliver(@config)
+    assert_receive {:fake_sendinblue, %{params: params}}
+    assert params["to"] == [%{"email" => "noname@bar.com"}]
+
+    assert params["attachment"] == [
+             %{
+               "content" => File.read!("./test/support/attachment.png") |> Base.encode64(),
+               "name" => "attachment.png"
+             }
+           ]
+  end
+
+  test "deliver/2 correctly formats DATA attachment from contents, filename" do
+    email =
+      new_email(
+        to: "noname@bar.com",
+        attachments: [
+          %Attachment{
+            filename: "attachment1.png",
+            data: File.read!("./test/support/attachment.png")
+          }
+        ]
+      )
+
+    email |> SendinBlueAdapterV3.deliver(@config)
+    assert_receive {:fake_sendinblue, %{params: params}}
+    assert params["to"] == [%{"email" => "noname@bar.com"}]
+
+    assert params["attachment"] == [
+             %{
+               "content" => File.read!("./test/support/attachment.png") |> Base.encode64(),
+               "name" => "attachment1.png"
+             }
+           ]
+  end
+
+  test "deliver/2 correctly formats DATA attachment from path" do
+    email =
+      new_email(
+        to: "noname@bar.com",
+        attachments: [Attachment.new("./test/support/attachment.png")]
+      )
+
+    email |> SendinBlueAdapterV3.deliver(@config)
+    assert_receive {:fake_sendinblue, %{params: params}}
+    assert params["to"] == [%{"email" => "noname@bar.com"}]
+
+    assert params["attachment"] == [
+             %{
+               "content" => File.read!("./test/support/attachment.png") |> Base.encode64(),
+               "name" => "attachment.png"
+             }
+           ]
+  end
+
+  test "deliver/2 correctly formats LINK attachment from path, filename" do
+    email =
+      new_email(
+        to: "noname@bar.com",
+        attachments: [
+          %Attachment{
+            path: "https://www.coders51.com/img/logo-alt.png",
+            filename: "attachment1.png"
+          }
+        ]
+      )
+
+    email |> SendinBlueAdapterV3.deliver(@config)
+    assert_receive {:fake_sendinblue, %{params: params}}
+    assert params["to"] == [%{"email" => "noname@bar.com"}]
+
+    assert params["attachment"] == [
+             %{
+               "url" => "https://www.coders51.com/img/logo-alt.png",
+               "name" => "attachment1.png"
+             }
+           ]
+  end
+
+  test "deliver/2 correctly formats LINK attachment from path" do
+    email =
+      new_email(
+        to: "noname@bar.com",
+        attachments: [
+          %Attachment{
+            path: "https://www.coders51.com/img/logo-alt.png"
+          }
+        ]
+      )
+
+    email |> SendinBlueAdapterV3.deliver(@config)
+    assert_receive {:fake_sendinblue, %{params: params}}
+    assert params["to"] == [%{"email" => "noname@bar.com"}]
+
+    assert params["attachment"] == [
+             %{
+               "url" => "https://www.coders51.com/img/logo-alt.png",
+               "name" => "logo-alt.png"
+             }
+           ]
+  end
+
+  test "deliver/2 correctly formats mixed DATA/LINK attachments" do
     email =
       new_email(
         to: "noname@bar.com",

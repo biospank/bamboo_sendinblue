@@ -5,7 +5,7 @@ defmodule BambooSendinblue.Mixfile do
 
   def project do
     [app: :bamboo_sendinblue,
-     version: "0.3.0",
+     version: "0.4.0",
      elixir: ">= 1.6.6",
      source_url: @project_url,
      homepage_url: @project_url,

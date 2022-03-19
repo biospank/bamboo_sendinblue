@@ -112,6 +112,8 @@ defmodule Bamboo.SendinBlueAdapterV3 do
     |> put_html_body(email)
     |> put_text_body(email)
     |> put_attachments(email)
+    |> put_template_params(email)
+    |> put_tag_params(email)
   end
 
   defp put_sender(body, %Email{from: {nil, address}}) do
@@ -120,6 +122,10 @@ defmodule Bamboo.SendinBlueAdapterV3 do
 
   defp put_sender(body, %Email{from: {name, address}}) do
     body |> Map.put(:sender, %{email: address, name: name})
+  end
+
+  defp put_sender(body, %Email{from: address}) do
+    body |> Map.put(:sender, %{email: address})
   end
 
   defp put_to(body, %Email{to: to}) do
@@ -174,6 +180,25 @@ defmodule Bamboo.SendinBlueAdapterV3 do
     Application.get_env(:bamboo, :sendinblue_base_uri) || default_base_uri()
   end
 
+  defp put_template_params(params, %{private:
+    %{templateId: template_name, params: template_model}}) do
+    params
+    |> Map.put(:templateId, template_name)
+    |> Map.put(:params, template_model)
+  end
+
+  defp put_template_params(params, _) do
+    params
+  end
+
+  defp put_tag_params(params, %{private: %{tags: tag}}) do
+    Map.put(params, :tags, tag)
+  end
+
+  defp put_tag_params(params, _) do
+    params
+  end
+
   defp put_attachments(body, %Email{attachments: []}), do: body
 
   defp put_attachments(body, %Email{attachments: atts}) do
@@ -209,7 +234,12 @@ defmodule Bamboo.SendinBlueAdapterV3 do
     |> Enum.map(fn
       {nil, address} -> %{email: address}
       {name, address} -> %{email: address, name: name || ""}
+      address -> %{email: address}
     end)
+  end
+
+  defp address_map(nil) do
+    []
   end
 
   defp default_base_uri, do: "https://api.sendinblue.com"

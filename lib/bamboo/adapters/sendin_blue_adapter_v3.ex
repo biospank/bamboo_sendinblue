@@ -174,6 +174,7 @@ defmodule Bamboo.SendinBlueAdapterV3 do
 
   defp put_reply_to_name(body, _), do: body
 
+  defp put_addresses(body, field, []), do: Map.delete(body, field)
   defp put_addresses(body, field, addresses), do: Map.put(body, field, addresses)
 
   defp base_uri do

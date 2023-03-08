@@ -3,6 +3,7 @@ defmodule Bamboo.SendinBlueAdapterV3Test do
   alias Bamboo.Email
   alias Bamboo.Attachment
   alias Bamboo.SendinBlueAdapterV3
+  alias Bamboo.SendinBlueHelper
 
   @config %{adapter: SendinBlueAdapterV3, api_key: "123_abc"}
   @config_with_bad_key %{adapter: SendinBlueAdapterV3, api_key: nil}
@@ -96,6 +97,14 @@ defmodule Bamboo.SendinBlueAdapterV3Test do
     assert request_path == "/v3/smtp/email"
   end
 
+  test "deliver/2 sends the to the right url for templates" do
+    new_email() |> SendinBlueHelper.template("hello") |> SendinBlueAdapterV3.deliver(@config)
+
+    assert_receive {:fake_sendinblue, %{request_path: request_path}}
+
+    assert request_path == "/v3/smtp/email"
+  end
+
   test "deliver/2 sends from, html and text body, subject, and headers" do
     email =
       new_email(
@@ -144,6 +153,49 @@ defmodule Bamboo.SendinBlueAdapterV3Test do
              %{"email" => "bcc1@bar.com", "name" => "BCC1"},
              %{"email" => "bcc2@bar.com", "name" => "BCC2"}
            ]
+  end
+
+  test "deliver/2 puts template name and empty content" do
+    email = SendinBlueHelper.template(new_email(), "hello")
+
+    SendinBlueAdapterV3.deliver(email, @config)
+
+    assert_receive {:fake_sendinblue, %{params: %{"templateId" => template_id,
+       "params" => template_model}}}
+    assert template_id == "hello"
+    assert template_model == %{}
+  end
+
+  test "deliver/2 puts template name and content" do
+    email = SendinBlueHelper.template(new_email(), "hello", [
+      %{name: "example name", content: "example content"}
+    ])
+
+    SendinBlueAdapterV3.deliver(email, @config)
+
+    assert_receive {:fake_sendinblue, %{params: %{"templateId" => template_id,
+       "params" => template_model}}}
+    assert template_id == "hello"
+    assert template_model == [%{"content" => "example content",
+      "name" => "example name"}]
+  end
+
+  test "deliver/2 puts tag param" do
+    new_email()
+      |> SendinBlueHelper.tag("some_tag")
+      |> SendinBlueAdapterV3.deliver(@config)
+
+    assert_receive {:fake_sendinblue, %{params: %{"tags" => ["some_tag"]}}}
+  end
+
+  test "deliver/2 puts multiple tags param" do
+    email = new_email()
+            |> SendinBlueHelper.tag("tag2")
+            |> SendinBlueHelper.tag("tag1")
+
+    SendinBlueAdapterV3.deliver(email, @config)
+
+    assert_receive {:fake_sendinblue, %{params: %{"tags" => ["tag1", "tag2"]}}}
   end
 
   test "deliver/2 correctly formats DATA attachment from local path even if filename is missing" do
@@ -302,5 +354,28 @@ defmodule Bamboo.SendinBlueAdapterV3Test do
              },
              %{"name" => "logo-alt.png", "url" => "https://www.coders51.com/img/logo-alt.png"}
            ]
+  end
+
+  test "deliver/2 puts inline attachments" do
+    email = SendinBlueHelper.template(new_email(), "hello", [
+      %{name: "example name", content: "example content <img src=\"my-attachment\" />"}
+    ])
+    |> Email.put_attachment(Path.join(__DIR__, "../../support/attachment.png"))
+
+    SendinBlueAdapterV3.deliver(email, @config)
+
+    assert_receive {
+      :fake_sendinblue,
+      %{
+        params: %{
+          "attachment" => [
+            %{
+              "content" => "iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAABg2lDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9Ti1JaHOwg4pChOlkQFXHUKhShQqgVWnUwufQLmjQkKS6OgmvBwY/FqoOLs64OroIg+AHi5uak6CIl/i8ptIjx4Lgf7+497t4BQrPKNKtnHNB028ykkmIuvyr2vkJACGEAUZlZxpwkpeE7vu4R4Otdgmf5n/tzRNWCxYCASDzLDNMm3iCe3rQNzvvEMVaWVeJz4jGTLkj8yHXF4zfOJZcFnhkzs5l54hixWOpipYtZ2dSIp4jjqqZTvpDzWOW8xVmr1ln7nvyFkYK+ssx1msNIYRFLkCBCQR0VVGEjQatOioUM7Sd9/EOuXyKXQq4KGDkWUIMG2fWD/8Hvbq3i5ISXFEkCoRfH+RgBeneBVsNxvo8dp3UCBJ+BK73jrzWBmU/SGx0tfgT0bwMX1x1N2QMud4DBJ0M2ZVcK0hSKReD9jL4pDwzcAuE1r7f2Pk4fgCx1lb4BDg6B0RJlr/u8u6+7t3/PtPv7AbeTclziFEqrAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH5QIFCgArZmj/VQAAAJ9JREFUeNrt0DEBAAAIAyC1f+dZwc8HItBJiptRIEuWLFmyZCmQJUuWLFmyFMiSJUuWLFkKZMmSJUuWLAWyZMmSJUuWAlmyZMmSJUuBLFmyZMmSpUCWLFmyZMlSIEuWLFmyZCmQJUuWLFmyFMiSJUuWLFkKZMmSJUuWLAWyZMmSJUuWAlmyZMmSJUuBLFmyZMmSpUCWLFmyZMlSIEvWtwXP8QPFWbLJBwAAAABJRU5ErkJggg==",
+              "name" => "attachment.png"
+            }
+          ]
+        }
+      }
+    }
   end
 end

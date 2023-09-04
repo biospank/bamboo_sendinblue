@@ -4,18 +4,21 @@ defmodule BambooSendinblue.Mixfile do
   @project_url "https://github.com/biospank/bamboo_sendinblue"
 
   def project do
-    [app: :bamboo_sendinblue,
-     version: "0.5.0",
-     elixir: ">= 1.6.6",
-     source_url: @project_url,
-     homepage_url: @project_url,
-     name: "Bamboo SendinBlue Adapter",
-     description: "A Bamboo adapter for SendinBlue",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     package: package(),
-     deps: deps(),
-     docs: [main: "README", extras: ["README.md"]]]
+    [
+      app: :bamboo_sendinblue,
+      version: "0.5.0",
+      elixir: ">= 1.6.6",
+      source_url: @project_url,
+      homepage_url: @project_url,
+      name: "Bamboo SendinBlue Adapter",
+      description: "A Bamboo adapter for SendinBlue",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      package: package(),
+      deps: deps(),
+      docs: [main: "README", extras: ["README.md"]],
+      prune_code_paths: false
+    ]
   end
 
   # Configuration for the OTP application

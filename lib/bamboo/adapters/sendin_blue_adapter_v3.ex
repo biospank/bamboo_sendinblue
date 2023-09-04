@@ -67,7 +67,7 @@ defmodule Bamboo.SendinBlueAdapterV3 do
         %{status_code: status, headers: headers, body: response}
 
       {:error, reason} ->
-        Logger.warn("#{inspect({url, body})}")
+        Logger.warning("#{inspect({url, body})}")
         raise(ApiError, %{message: inspect(reason)})
     end
   end
